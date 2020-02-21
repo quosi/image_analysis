@@ -16,8 +16,6 @@ logs
 
 *.pdf
 */*.pdf
-*.rtf
-*/*.rtf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
