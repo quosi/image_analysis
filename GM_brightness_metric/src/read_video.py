@@ -4,7 +4,7 @@ import numpy as np
 import concurrent.futures
 from gm_metric import GmMetric
 
-def video(inputpath):
+def read_video(inputpath):
     start_time = time.time()
     path, file = os.path.split(inputpath)
     cap = cv2.VideoCapture(inputpath)
@@ -27,7 +27,8 @@ def video(inputpath):
         print(gm_value_dict)
         cap.release()
         cv2.destroyAllWindows()
+    return gm_value_dict
 
 if __name__ == "__main__":
-    test_data = "/Users/pepper/Projekte/PythonProjects/GM_brightness_metric/video/Brosserness_4sec_h264_1920x1080_24fps_2Ch-stereo.mp4"
-    video(test_data)
+    test_data = "/Users/pepper/Projekte/PythonProjects/GM_brightness_metric/resources/video/Brosserness_4sec_h264_1920x1080_24fps_2Ch-stereo.mp4"
+    read_video(test_data)

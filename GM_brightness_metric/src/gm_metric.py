@@ -78,3 +78,4 @@ class GmMetric:
         print(f'PQ normalized GM-PL value: {round(pq_norm_value, 2)}') 
 
         return pq_norm_value
+
