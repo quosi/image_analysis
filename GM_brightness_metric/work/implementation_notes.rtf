@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {\rtf1\ansi\ansicpg1252\cocoartf2511
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 Menlo-Regular;
 \f3\fmodern\fcharset0 Courier;}
@@ -135,3 +136,106 @@ for result in executor.map(f, args):\
     pass\
 \
 }
+=======
+
+INFO: 
+Metric proposed by Ploumis, Boitard, Jacquemin, Damberg, Ballestad, Nasiopoulos in „Quantitative Evaluation and Attribute of Overall Brightness in High Dynamic Range World“
+
+SOURCE:
+
+ https://www.researchgate.net/publication/337267269_Quantitative_Evaluation_and_Attribute_of_Overall_Brightness_in_a_High_Dynamic_Range_World
+
+https://ieeexplore.ieee.org/document/8610037
+
+PRESENTATION of paper at SMPTE: 
+https://www.youtube.com/watch?v=JcPv6KOPxFg
+
+
+
+NOTES:
+
+- Direkt als Python Funktion benutzen, anstatt „von hand“ zu implementieren!!
+Mittlere Abweichung ist die „variance“
+- GM = geometrisches Mittel
+
+CODE:
+
+def gm_log(self, img):
+
+        img_list = img.tolist()
+        # slice 3d-image-array into 1d-array
+        img_slice = img
+        for x, y, z in np.nditer(img_slice):
+            print(x)
+
+        math.exp(math.fsum(math.log(x) for x in img_slice) / len(img_slice))
+        return 
+
+__________________
+
+Geo mean for grey scale images
+        ksize = 5
+        geomean_grey = np.uint8(np.exp(cv2.boxFilter(np.log(img), -1, (ksize, ksize))))
+
+
+
+        
+# geometirisches mittel für 5x5 pixel-cluster
+        ksize = 5
+        # note: need fload numbers as input!
+        geomean_red = np.uint8(np.exp(cv2.boxFilter(np.log(img), -1, (ksize, ksize))))
+        return geomean_red
+
+:____________________________________
+
+
+MULTI THREADING
+
+from multiprocessing.pool import ThreadPool
+——————————
+
+import concurrent.futures
+import math
+
+PRIMES = [
+    112272535095293,
+    112582705942171,
+    112272535095293,
+    115280095190773,
+    115797848077099,
+    1099726899285419]
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+
+    sqrt_n = int(math.floor(math.sqrt(n)))
+    for i in range(3, sqrt_n + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+def main():
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        for number, prime in zip(PRIMES, executor.map(is_prime, PRIMES)):
+            print('%d is prime: %s' % (number, prime))
+
+if __name__ == '__main__':
+    main()
+
+_____________-
+
+args = ((a, b) for b in c)
+for result in executor.map(lambda p: f(*p), args):   # (*p) does the unpacking part
+    pass
+______________
+
+args = ((a, b) for b in c)
+for result in executor.map(f, args):
+    pass
+
+>>>>>>> f61045aff5e891e3cd7c841ea7d41b1fda5342e7

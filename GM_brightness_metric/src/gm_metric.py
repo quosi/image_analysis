@@ -15,6 +15,7 @@ class GmMetric:
     OUTPUT: integer value of GM pixel luminance value"""
 
     def __init__(self, img_in, bit_depth):
+        # input: single image as numpy array
         self.img = img_in
         # bit_depth of image_in (single frame of img_in)
         self.n = bit_depth
@@ -29,7 +30,7 @@ class GmMetric:
         text = "Collecting pixel values ..."
         img_RGB = self.img
         img_gray = cv2.cvtColor(img_RGB, cv2.COLOR_BGR2GRAY)
-  
+        # 
         print(text)
         img_R, img_G, img_B = [img_RGB[:,:,channel].astype(float) for channel in range(0, 3, 1)]
         # slice input of each channel into single rows of pixels to calculate the variance & gm_log
@@ -40,6 +41,7 @@ class GmMetric:
         pixel_list = np.append(pixel_list, pixel_list_G)
         pixel_list = np.append(pixel_list, pixel_list_B)
         pixel_list_gray = img_gray.ravel()
+
         return pixel_list
 
     def gm_log(self, pixel_list):
@@ -54,6 +56,7 @@ class GmMetric:
                 continue
             sum_of_log = sum_of_log + math.log(x)
         print(f'Number of black pixel: {num_black_pixel}')
+
         return math.exp(sum_of_log / len(pixel_list))
 
     def metric(self):
@@ -64,6 +67,7 @@ class GmMetric:
         value = math.sqrt(0.65 * (gm_log_value ** 2) + 0.35 * statistics.variance(img)) / 2 ** (self.n - 1)
         # note: deleted math.exp metric(), used in gm_log()
         print(f'GM pixel luminance value: {round(value, 2)}')
+
         return value
 
     def pq_1000(self):
@@ -72,4 +76,5 @@ class GmMetric:
         (page 8 of above cited paper)"""
         pq_norm_value = (self.metric()/1000)*100
         print(f'PQ normalized GM-PL value: {round(pq_norm_value, 2)}') 
+
         return pq_norm_value
