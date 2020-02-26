@@ -1,5 +1,7 @@
 import math
 import statistics
+# from statistics import geometric_mean, pvariance
+
 import cv2
 from cv2 import VideoCapture, VideoWriter
 import numpy as np
@@ -41,33 +43,30 @@ class GmMetric:
         pixel_list = np.append(pixel_list, pixel_list_G)
         pixel_list = np.append(pixel_list, pixel_list_B)
         pixel_list_gray = img_gray.ravel()
+        print(f'GRAY-PIXEL: {len(pixel_list_gray)}')
+        print(len(pixel_list))
+        return pixel_list_gray
 
-        return pixel_list
-
-    def gm_log(self, pixel_list):
-        """Calculation of geometric mean value for list of pixel values (1D-array or list)"""
-        #sum_of_log = math.fsum(math.log(x) for x in pixel_list)
-        sum_of_log = 0.0
+    def count_zero_value_pixel(self):
+        """Counts pixel with zero value (black) in list of pixels (1D-array or list)"""
+        img = self.load()
         num_black_pixel = 0
-        for x in pixel_list:
+        for x in img:
             if x == 0:
                 num_black_pixel +=1
-                # step over pixel with zero-value and continues for-loop
+                # step over pixel with zero-value and continues loop
                 continue
-            sum_of_log = sum_of_log + math.log(x)
         print(f'Number of black pixel: {num_black_pixel}')
-
-        return math.exp(sum_of_log / len(pixel_list))
+        return num_black_pixel
 
     def metric(self):
         """Calculating geometric mean pixel luminance value for one image
         OUTPUT: integer value"""
         img = self.load()
-        gm_log_value = self.gm_log(img)
-        value = math.sqrt(0.65 * (gm_log_value ** 2) + 0.35 * statistics.variance(img)) / 2 ** (self.n - 1)
-        # note: deleted math.exp metric(), used in gm_log()
+        GM = statistics.geometric_mean(img)
+        value = math.sqrt(0.65 * (GM ** 2) + 0.35 * statistics.pvariance(img, GM)) / 2 ** (self.n - 1)
+        # Thanks Paul, for correcting the formular!
         print(f'GM pixel luminance value: {round(value, 2)}')
-
         return value
 
     def pq_1000(self):
