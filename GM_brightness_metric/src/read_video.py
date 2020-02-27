@@ -29,5 +29,5 @@ def video(inputpath):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    test_data = "/Users/pepper/Projekte/PythonProjects/GM_brightness_metric/video/Brosserness_4sec_h264_1920x1080_24fps_2Ch-stereo.mp4"
+    test_data = "/Users/pepper/Projekte/PythonProjects/image_analysis_repo/GM_brightness_metric/resources/video/Brosserness_4sec_h264_1920x1080_24fps_2Ch-stereo.mp4"
     video(test_data)
