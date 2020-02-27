@@ -63,7 +63,8 @@ class GmMetric:
         """Calculating geometric mean pixel luminance value for one image
         OUTPUT: integer value"""
         img = self.load()
-        GM = statistics.geometric_mean(img)
+        GM = math.exp(statistics.mean(math.log(img)))
+        # alternativ try np.exp(np.mean(np.log()
         value = math.sqrt(0.65 * (GM ** 2) + 0.35 * statistics.pvariance(img, GM)) / 2 ** (self.n - 1)
         # Thanks Paul, for correcting the formular!
         print(f'GM pixel luminance value: {round(value, 2)}')
