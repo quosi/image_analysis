@@ -2,7 +2,7 @@ import pytest, logging
 from read_video import read_video
 
 def test_read_video():
-    test_data = "/Users/pepper/Projekte/PythonProjects/GM_brightness_metric/resources/video/Brosserness_4sec_h264_1920x1080_24fps_2Ch-stereo.mp4"
+    test_data = "/Users/pepper/Projekte/PythonProjects/image_analysis_repo/GM_brightness_metric/resources/video/Brosserness_4sec_h264_1920x1080_24fps_2Ch-stereo.mp4"
     #logging.info('ERROR')
     i = 0
     for frame in read_video(test_data):

@@ -31,20 +31,13 @@ class GmMetric:
         OUTPUT: list of pixel values"""
         text = "Collecting pixel values ..."
         img_RGB = self.img
+        print(img_RGB.shape)
         img_gray = cv2.cvtColor(img_RGB, cv2.COLOR_BGR2GRAY)
-        # 
+        # img_R, img_G, img_B = [img_RGB[:,:,channel].astype(float) for channel in range(0, 3, 1)]
         print(text)
-        img_R, img_G, img_B = [img_RGB[:,:,channel].astype(float) for channel in range(0, 3, 1)]
         # slice input of each channel into single rows of pixels to calculate the variance & gm_log
-        pixel_list_R = img_R.ravel()
-        pixel_list_G = img_G.ravel()
-        pixel_list_B = img_B.ravel()
-        pixel_list = pixel_list_R
-        pixel_list = np.append(pixel_list, pixel_list_G)
-        pixel_list = np.append(pixel_list, pixel_list_B)
         pixel_list_gray = img_gray.ravel()
-        print(f'GRAY-PIXEL: {len(pixel_list_gray)}')
-        print(len(pixel_list))
+        print(f'GRAY-PIXEL: {type(pixel_list_gray)}')
         return pixel_list_gray
 
     def count_zero_value_pixel(self):
@@ -63,7 +56,9 @@ class GmMetric:
         """Calculating geometric mean pixel luminance value for one image
         OUTPUT: integer value"""
         img = self.load()
-        GM = math.exp(statistics.mean(math.log(img)))
+        #np.squeeze(img)
+        print(f'>>>>>> {img.shape}')
+        GM = math.exp(statistics.mean(np.log(img)))
         # alternativ try np.exp(np.mean(np.log()
         value = math.sqrt(0.65 * (GM ** 2) + 0.35 * statistics.pvariance(img, GM)) / 2 ** (self.n - 1)
         # Thanks Paul, for correcting the formular!
